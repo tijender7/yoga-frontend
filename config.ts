@@ -1,11 +1,12 @@
 // frontend/config.ts
-export const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-  throw new Error('NEXT_PUBLIC_API_URL environment variable is not set');
-}
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.yogforever.com';
 
 export const API_ROUTES = {
-  SIGNUP: `${API_URL}/auth/signup`,
-  FREE_CLASS: `${API_URL}/auth/free-class`,
+  SIGNUP: `${BASE_URL}/api/auth/signup`,
+  FREE_CLASS: `${BASE_URL}/api/free-class`,
+  CONTACT: `${BASE_URL}/api/contact`
+};
+
+if (!BASE_URL) {
+  throw new Error('NEXT_PUBLIC_API_URL environment variable is not set');
 }

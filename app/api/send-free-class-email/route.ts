@@ -1,24 +1,13 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { API_ROUTES } from '@/config';
 
 export async function POST(request: Request) {
-  if (!API_URL) {
-    throw new Error('NEXT_PUBLIC_API_URL environment variable is not set');
-  }
-
   try {
     const body = await request.json();
     const { name, email, phone, healthConditions } = body;
 
-    // Call backend API to create user
-    const backendResponse = await fetch(`${API_URL}/auth/signup`, {
+    // Use API_ROUTES
+    const backendResponse = await fetch(API_ROUTES.SIGNUP, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
