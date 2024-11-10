@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
+import { API_ROUTES } from '@/config';
+
 
 export default function StickyJoinForm() {
   const [isSticky, setIsSticky] = useState(false);
@@ -67,7 +69,7 @@ export default function StickyJoinForm() {
       }
 
       // Call backend API to create user
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
+      const response = await fetch(API_ROUTES.SIGNUP, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

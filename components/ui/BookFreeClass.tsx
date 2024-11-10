@@ -17,6 +17,7 @@ import ReactConfetti from 'react-confetti'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabase'
+import { API_ROUTES } from '@/config';
 
 type NotificationType = 'success' | 'error' | null;
 
@@ -92,7 +93,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
       }
 
       // Create a new user account with email confirmation
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
+      const response = await fetch(API_ROUTES.SIGNUP, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
