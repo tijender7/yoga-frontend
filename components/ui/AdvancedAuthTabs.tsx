@@ -13,6 +13,7 @@ import { supabase } from '@/lib/supabase'
 import { AuthError } from '@supabase/supabase-js'
 import { useRouter, useSearchParams } from 'next/navigation'
 import TermsModal from '@/components/legal/TermsModal'
+import { API_ROUTES } from '@/config'
 
 export default function AdvancedAuthTabs() {
   return (
@@ -182,7 +183,7 @@ function AuthContent() {
         }
 
         // Step 2: Call backend signup endpoint
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, {
+        const response = await fetch(API_ROUTES.SIGNUP, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
