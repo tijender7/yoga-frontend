@@ -79,7 +79,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
 
       // Check if email already exists in users table
       const { data: existingUser, error: checkError } = await supabase
-        .from('users')
+        .from('profiles')
         .select('id')
         .eq('email', email)
         .single()
@@ -95,7 +95,10 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
       // Create a new user account with email confirmation
       const response = await fetch(API_ROUTES.SIGNUP, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({
           email,
           name,

@@ -53,7 +53,7 @@ export default function StickyJoinForm() {
     try {
       // Check if user already exists
       const { data: existingUser, error: checkError } = await supabase
-        .from('users')
+        .from('profiles')
         .select('id')
         .eq('email', email)
         .single();
