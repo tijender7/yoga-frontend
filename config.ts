@@ -14,5 +14,6 @@ export const API_ROUTES = {
   SIGNUP: `${API_URL}/api/auth/signup`,
   FREE_CLASS: `${API_URL}/api/free-class`,
   CONTACT: `${API_URL}/api/contact`,
-  PAYMENT: `${API_URL}/api/create-payment`
+  PAYMENT: `${API_URL}/api/create-payment`,
+  CHECK_EMAIL: `${API_URL}/api/auth/check-email`,
 };

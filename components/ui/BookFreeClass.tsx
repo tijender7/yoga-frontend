@@ -78,18 +78,15 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
       }
 
       // Check if email already exists in users table
-      const { data: existingUser, error: checkError } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .single()
+      const checkEmailResponse = await fetch(API_ROUTES.CHECK_EMAIL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
 
-      if (checkError && checkError.code !== 'PGRST116') {
-        throw new Error(`Error checking email: ${checkError.message}`)
-      }
-
-      if (existingUser) {
-        throw new Error("You have already booked a free class. Please check your email for details.")
+      const { exists } = await checkEmailResponse.json();
+      if (exists) {
+        throw new Error("You have already booked a free class. Please check your email for details.");
       }
 
       // Create a new user account with email confirmation
