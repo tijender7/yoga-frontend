@@ -79,7 +79,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
 
       // Check if email already exists in users table
       const { data: existingUser, error: checkError } = await supabase
-        .from('profiles')
+        .from('users')
         .select('id')
         .eq('email', email)
         .single()
