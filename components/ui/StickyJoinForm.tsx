@@ -17,6 +17,11 @@ export default function StickyJoinForm() {
 
   useEffect(() => {
     const handleScroll = () => {
+      if (window.innerWidth < 768) {
+        setIsSticky(false);
+        return;
+      }
+
       const offset = window.scrollY;
       const communityForm = document.getElementById('community-form');
       if (communityForm) {
@@ -25,9 +30,11 @@ export default function StickyJoinForm() {
     };
 
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
   }, []);
 
@@ -99,7 +106,12 @@ export default function StickyJoinForm() {
   };
 
   return (
-    <section id="community-form" className={`w-full bg-white transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : ''}`}>
+    <section 
+      id="community-form" 
+      className={`w-full bg-white transition-all duration-300 ${
+        isSticky ? 'md:fixed hidden md:block top-0 left-0 right-0 z-50 shadow-md' : ''
+      }`}
+    >
       <div className="container px-2 sm:px-4 md:px-6 mx-auto py-2 sm:py-3 md:py-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 md:mb-4 text-center text-black">Join Our Community</h2>
