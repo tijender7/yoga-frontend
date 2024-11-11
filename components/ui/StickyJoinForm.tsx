@@ -79,7 +79,6 @@ export default function StickyJoinForm() {
           name,
           interest,
           source: 'sticky_header',
-          password: Math.random().toString(36).slice(-8)
         }),
       });
 

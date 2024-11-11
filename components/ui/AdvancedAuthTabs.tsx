@@ -208,7 +208,7 @@ function AuthContent() {
 
         // Redirect to auth page with signin tab after 2 seconds
         redirectTimerRef.current = setTimeout(() => {
-          router.push('/auth?tab=signin');
+          router.push('https://yogforever.com/auth?tab=signin');
         }, 2000);
       } else if (activeTab === 'signin') {
         // Sign-In Logic

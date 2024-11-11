@@ -18,7 +18,7 @@ const nextConfig = {
         },
         {
           source: '/test-redirect',
-          destination: '/auth',
+          destination: 'https://yogforever.com/auth',
           permanent: false,
         },
       ]

@@ -1,14 +1,18 @@
 // frontend/config.ts
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.yogforever.com';
+const AUTH_REDIRECT_URL = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || 'https://yogforever.com/auth';
 
-if (!BASE_URL) {
-  console.warn('NEXT_PUBLIC_API_URL is not set, using fallback URL');
+// Add validation and logging
+if (!process.env.NEXT_PUBLIC_API_URL || !process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL) {
+  console.warn('[CONFIG] Using production URLs as fallback');
 }
 
-export const API_URL = BASE_URL || 'https://api.yogforever.com';
+export const API_URL = BASE_URL;
+export const REDIRECT_URL = AUTH_REDIRECT_URL;
 
-// Add logging
-console.log('API_URL:', API_URL);
+// Log current configuration
+console.log('[CONFIG] API_URL:', API_URL);
+console.log('[CONFIG] REDIRECT_URL:', REDIRECT_URL);
 
 export const API_ROUTES = {
   SIGNUP: `${API_URL}/api/auth/signup`,
