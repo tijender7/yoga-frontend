@@ -67,7 +67,7 @@ export default function ContactFormModal() {
 
       if (dbError) throw dbError
 
-      // Send email notification
+      // Send email notification with better error handling
       const response = await fetch('/api/send-contact-notification', {
         method: 'POST',
         headers: {
@@ -84,17 +84,16 @@ export default function ContactFormModal() {
       const responseData = await response.json()
 
       if (!response.ok) {
-        throw new Error(`Failed to send email notification: ${responseData.details || 'Unknown error'}`)
+        throw new Error(responseData.error || 'Failed to send notification')
       }
       
       toast.success("Support request sent successfully! We'll get back to you soon.")
       setIsOpen(false)
-      setForm(prev => ({ ...prev, message: '' })) // Only clear message, keep user details
+      setForm(prev => ({ ...prev, message: '' }))
     } catch (err) {
-      // Properly type the error
-      const error = err as Error;
-      console.error('Error sending message:', error);
-      toast.error(error.message || "Failed to send message. Please try again.");
+      const error = err as Error
+      console.error('Error sending message:', error)
+      toast.error(error.message || "Failed to send message. Please try again.")
     } finally {
       setIsLoading(false)
     }

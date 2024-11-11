@@ -1,23 +1,38 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '465'),
-  secure: true,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
+// Create transporter with error handling
+const createTransporter = () => {
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    throw new Error('SMTP configuration missing');
   }
-});
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '465'),
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+};
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { name, email, message, userId } = body;
 
-    // Verify SMTP connection silently
-    await transporter.verify();
+    // Create transporter with error handling
+    const transporter = createTransporter();
+
+    // Verify SMTP connection with proper error handling
+    try {
+      await transporter.verify();
+    } catch (verifyError) {
+      console.error('SMTP Verification failed:', verifyError);
+      throw new Error('Failed to connect to email server');
+    }
 
     const mailOptions = {
       from: process.env.SMTP_USER,
@@ -35,7 +50,12 @@ export async function POST(request: Request) {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (sendError) {
+      console.error('Failed to send email:', sendError);
+      throw new Error('Failed to send email notification');
+    }
 
     return NextResponse.json({ 
       success: true,
@@ -44,14 +64,12 @@ export async function POST(request: Request) {
 
   } catch (err) {
     const error = err as Error;
-    // Only log error in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Email sending failed:', error.message);
-    }
+    console.error('Email notification error:', error.message);
     
     return NextResponse.json(
       { 
-        error: 'Failed to send notification'
+        error: error.message || 'Failed to send notification',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
       },
       { status: 500 }
     );
