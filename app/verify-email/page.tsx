@@ -16,31 +16,27 @@ function VerifyEmailContent() {
     useEffect(() => {
         const verifyEmail = async () => {
             try {
-                const token = searchParams.get('token')
-                const type = searchParams.get('type')
+                const fullUrl = window.location.href
+                
+                if (fullUrl.includes('type=signup') || fullUrl.includes('type=recovery')) {
+                    const { data, error } = await supabase.auth.getSession()
+                    
+                    if (error) throw error
 
-                if (!token || !type) {
+                    if (data?.session) {
+                        setVerificationStatus('success')
+                        setMessage('Email verified successfully! Redirecting to login...')
+                        
+                        if (fullUrl.includes('type=signup')) {
+                            setTimeout(() => router.push('/auth?tab=signin'), 3000)
+                        } else {
+                            setTimeout(() => router.push('/reset-password'), 3000)
+                        }
+                    }
+                } else {
                     setVerificationStatus('error')
                     setMessage('Invalid verification link.')
-                    return
                 }
-
-                const { error } = await supabase.auth.verifyOtp({
-                    token_hash: token,
-                    type: 'signup'
-                })
-
-                if (error) {
-                    throw error
-                }
-
-                setVerificationStatus('success')
-                setMessage('Email verified successfully! Redirecting to login...')
-                
-                setTimeout(() => {
-                    router.push('/auth?tab=signin')
-                }, 3000)
-
             } catch (error) {
                 console.error('Verification error:', error)
                 setVerificationStatus('error')
@@ -49,7 +45,7 @@ function VerifyEmailContent() {
         }
 
         verifyEmail()
-    }, [router, searchParams])
+    }, [router])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

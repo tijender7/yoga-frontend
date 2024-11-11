@@ -192,7 +192,8 @@ function AuthContent() {
             email,
             password,
             name: username,
-            username
+            username,
+            redirectTo: `${window.location.origin}/verify-email`
           }),
         });
 
