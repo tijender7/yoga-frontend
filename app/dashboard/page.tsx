@@ -382,7 +382,7 @@ export default function Dashboard() {
                 </Table>
               </div>
             ) : (
-              <div className="text-center py-8 space-y-4">
+              <div className="text-center py-8">
                 <div className="bg-primary/5 p-6 rounded-lg border border-primary/10">
                   <h3 className="text-2xl font-semibold text-primary mb-4">
                     🎉 Start Your Yoga Journey Today!
@@ -398,13 +398,19 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
-
-                {/* Add PricingSection component here */}
-                <div className="mt-8">
-                  <PricingSection />
-                </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Always show Pricing Section below payment history */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold">Our Plans</CardTitle>
+            <CardDescription>Choose the perfect plan for your yoga journey</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PricingSection />
           </CardContent>
         </Card>
 
