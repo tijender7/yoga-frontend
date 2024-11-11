@@ -1,12 +1,20 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
-// Create transporter with error handling
-const createTransporter = () => {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    throw new Error('SMTP configuration missing');
+// Validate SMTP config first
+const validateSMTPConfig = () => {
+  const required = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length) {
+    throw new Error(`Missing SMTP configuration: ${missing.join(', ')}`);
   }
+};
 
+// Create transporter with validation
+const createTransporter = () => {
+  validateSMTPConfig();
+  
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || '465'),
@@ -18,21 +26,27 @@ const createTransporter = () => {
   });
 };
 
+// Add this at the top to verify env variables
+const checkEnvVariables = () => {
+  const required = ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length) {
+    console.error('Missing environment variables:', missing);
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+};
+
 export async function POST(request: Request) {
   try {
+    // First check env variables
+    checkEnvVariables();
+    
     const body = await request.json();
     const { name, email, message, userId } = body;
 
-    // Create transporter with error handling
+    // Create transporter with proper error handling
     const transporter = createTransporter();
-
-    // Verify SMTP connection with proper error handling
-    try {
-      await transporter.verify();
-    } catch (verifyError) {
-      console.error('SMTP Verification failed:', verifyError);
-      throw new Error('Failed to connect to email server');
-    }
 
     const mailOptions = {
       from: process.env.SMTP_USER,
@@ -50,12 +64,7 @@ export async function POST(request: Request) {
       `
     };
 
-    try {
-      await transporter.sendMail(mailOptions);
-    } catch (sendError) {
-      console.error('Failed to send email:', sendError);
-      throw new Error('Failed to send email notification');
-    }
+    await transporter.sendMail(mailOptions);
 
     return NextResponse.json({ 
       success: true,
@@ -64,8 +73,9 @@ export async function POST(request: Request) {
 
   } catch (err) {
     const error = err as Error;
-    console.error('Email notification error:', error.message);
+    console.error('Email notification error:', error);
     
+    // Send more specific error message
     return NextResponse.json(
       { 
         error: error.message || 'Failed to send notification',
