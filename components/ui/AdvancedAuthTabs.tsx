@@ -204,7 +204,7 @@ function AuthContent() {
 
         setAlert({
           type: 'success',
-          message: '🎉 Account created successfully! Please check your email inbox to verify your account. You will be redirected shortly.'
+          message: '🎉 Account created successfully! Please check your email inbox to set your password.'
         });
 
         // Redirect to auth page with signin tab after 2 seconds
