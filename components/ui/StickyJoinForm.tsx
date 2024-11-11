@@ -86,6 +86,7 @@ export default function StickyJoinForm() {
           name,
           interest,
           source: 'sticky_header',
+          password: Math.random().toString(36).slice(-8)
         }),
       });
 
@@ -133,16 +134,14 @@ export default function StickyJoinForm() {
                 className="w-full h-8 sm:h-10 text-sm text-black bg-white"
               />
             </div>
-            {!isSticky && (
-              <div className="flex-1 mb-2 sm:mb-0">
-                <Input 
-                  placeholder="Interest (e.g., Beginner Yoga)" 
-                  value={interest}
-                  onChange={(e) => setInterest(e.target.value)}
-                  className="w-full h-8 sm:h-10 text-sm text-black bg-white"
-                />
-              </div>
-            )}
+            <div className="hidden md:block flex-1 mb-2 sm:mb-0">
+              <Input 
+                placeholder="Interest (e.g., Beginner Yoga)" 
+                value={interest}
+                onChange={(e) => setInterest(e.target.value)}
+                className="w-full h-8 sm:h-10 text-sm text-black bg-white"
+              />
+            </div>
             <Button type="submit" disabled={isLoading} className="w-full sm:w-auto h-8 sm:h-10 text-sm">
               {isLoading ? 'Joining...' : 'Join Now'}
             </Button>
