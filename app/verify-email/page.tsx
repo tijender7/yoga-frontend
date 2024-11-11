@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2 } from 'lucide-react'
 
-export default function VerifyEmail() {
+function VerifyEmailContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [verificationStatus, setVerificationStatus] = useState<'verifying' | 'success' | 'error'>('verifying')
@@ -16,7 +16,6 @@ export default function VerifyEmail() {
     useEffect(() => {
         const verifyEmail = async () => {
             try {
-                // Get the token from the URL
                 const token = searchParams.get('token')
                 const type = searchParams.get('type')
 
@@ -26,7 +25,6 @@ export default function VerifyEmail() {
                     return
                 }
 
-                // Verify the token
                 const { error } = await supabase.auth.verifyOtp({
                     token_hash: token,
                     type: 'signup'
@@ -39,7 +37,6 @@ export default function VerifyEmail() {
                 setVerificationStatus('success')
                 setMessage('Email verified successfully! Redirecting to login...')
                 
-                // Redirect to login page after 3 seconds
                 setTimeout(() => {
                     router.push('/auth?tab=signin')
                 }, 3000)
@@ -74,5 +71,17 @@ export default function VerifyEmail() {
                 </CardContent>
             </Card>
         </div>
+    )
+}
+
+export default function VerifyEmail() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+            </div>
+        }>
+            <VerifyEmailContent />
+        </Suspense>
     )
 }
