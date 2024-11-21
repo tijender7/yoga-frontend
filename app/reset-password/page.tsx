@@ -32,20 +32,32 @@ export default function ResetPassword() {
     }
 
     try {
-      const { error } = await supabase.auth.updateUser({ password: password })
+      const { error } = await supabase.auth.updateUser({ 
+        password: password 
+      })
+
       if (error) {
-        if (error.message.includes("Password should be different from the old password")) {
-          setAlert({ type: 'error', message: 'New password must be different from the current password.' })
+        if (error.message.includes("Password should be different")) {
+          setAlert({ 
+            type: 'error', 
+            message: 'New password must be different from the current password.' 
+          })
         } else {
           throw error
         }
       } else {
-        setAlert({ type: 'success', message: 'Password has been reset successfully. Redirecting to login...' })
-        setTimeout(() => router.push('/auth'), 3000) // Redirect after 3 seconds
+        setAlert({ 
+          type: 'success', 
+          message: 'Password reset successful. Redirecting...' 
+        })
+        setTimeout(() => router.push('/auth'), 3000)
       }
     } catch (error) {
       console.error('Password reset error:', error)
-      setAlert({ type: 'error', message: 'Failed to reset password. Please try again.' })
+      setAlert({ 
+        type: 'error', 
+        message: 'Unable to reset password. Please try again.' 
+      })
     } finally {
       setIsLoading(false)
     }

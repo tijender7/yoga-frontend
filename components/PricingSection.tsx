@@ -62,23 +62,18 @@ export default function PricingSection() {
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      
+      if (user) {
+        setUser({
+          id: user.id,
+          email: user.email
+        } as User);
+      } else {
+        setUser(null);
+      }
     };
     getUser();
   }, []);
-
-  useEffect(() => {
-    const storeUserId = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user?.id) {
-        // Store user ID in localStorage for payment tracking
-        localStorage.setItem('current_user_id', user.id);
-      }
-    };
-    storeUserId();
-  }, []);
-
-
 
   return (
     <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
