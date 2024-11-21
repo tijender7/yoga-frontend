@@ -11,8 +11,7 @@ export const API_URL = BASE_URL;
 export const REDIRECT_URL = AUTH_REDIRECT_URL;
 
 // Log current configuration
-console.log('[CONFIG] API_URL:', API_URL);
-console.log('[CONFIG] REDIRECT_URL:', REDIRECT_URL);
+
 
 export const API_ROUTES = {
   SIGNUP: `${API_URL}/api/auth/signup`,

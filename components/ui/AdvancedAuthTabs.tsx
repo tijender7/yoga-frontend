@@ -347,11 +347,29 @@ function AuthContent() {
 
       setAlert({ type: 'success', message: 'Password reset email sent! Please check your inbox.' })
     } catch (error: any) {
-      console.error('Password reset failed:', error)
-      setAlert({
-        type: 'error',
-        message: 'Password reset failed. Please try again.'
-      })
+      // Development mein logging
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Password reset error:', error);
+      }
+      
+      // User ke liye specific messages
+      if (error.message.includes('rate-limit')) {
+        setAlert({
+          type: 'error',
+          message: 'Too many attempts. Please try again later.'
+        });
+      } else if (error.message.includes('invalid-email')) {
+        setAlert({
+          type: 'error',
+          message: 'Please check your email address.'
+        });
+      } else {
+        // Generic fallback message
+        setAlert({
+          type: 'error',
+          message: 'Unable to process request. Please try again.'
+        });
+      }
     } finally {
       setIsLoading(false)
     }

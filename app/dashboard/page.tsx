@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import PricingSection from '@/components/PricingSection'
 import { getCurrencySymbol } from '@/lib/utils'
+import { errorHandler } from '@/lib/errorHandler'
 
 
 
@@ -52,8 +53,14 @@ const getFormattedStatus = (status: string) => {
 
 
 
-// Add this function to fetch payments
-async function fetchPaymentHistory(userId: string) {
+// Type definition for API response
+type PaymentResponse = {
+  data: Payment[] | null;
+  error?: string;
+};
+
+// Updated fetchPaymentHistory function
+async function fetchPaymentHistory(userId: string): Promise<PaymentResponse> {
   const { data, error } = await supabase
     .from('payments')
     .select('*')
@@ -61,11 +68,13 @@ async function fetchPaymentHistory(userId: string) {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching payment history:', error);
-    return null;
+    return {
+      data: null,
+      error: errorHandler.getUserMessage(error)
+    };
   }
 
-  return data;
+  return { data: data as Payment[] };
 }
 
 // Improved getInitials function with proper type checking
@@ -230,8 +239,12 @@ export default function Dashboard() {
       if (user) {
         setUser(user)
         
-        const payments = await fetchPaymentHistory(user.id)
-        setPaymentHistory(payments)
+        const response = await fetchPaymentHistory(user.id)
+        setPaymentHistory(response.data)
+        
+        if (response.error) {
+          toast.error(response.error)
+        }
       } else {
         router.push('/auth')
       }
