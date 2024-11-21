@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { handlePayment } from '@/lib/paymentActions'
 import RazorpayButton from './RazorpayButton';
 import { User } from '@supabase/supabase-js'
 
@@ -79,26 +78,7 @@ export default function PricingSection() {
     storeUserId();
   }, []);
 
-  const handlePayNow = async (planId: number) => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-      console.error('User not logged in');
-      return;
-    }
-    
-    try {
-      const plan = pricingPlans.find(p => p.id === planId);
-      if (!plan) throw new Error('Plan not found');
-      
-      await handlePayment(
-        parseInt(plan.discounted_price), 
-        plan.currency,
-        user.id  // Pass user ID here
-      );
-    } catch (error) {
-      console.error('Payment failed:', error);
-    }
-  };
+
 
   return (
     <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
@@ -158,6 +138,7 @@ export default function PricingSection() {
                 <div className="w-full max-w-[200px]">
                   <RazorpayButton 
                     buttonId={plan.razorpay_button_id}
+                    userId={user?.id}
                   />
                 </div>
               </CardFooter>

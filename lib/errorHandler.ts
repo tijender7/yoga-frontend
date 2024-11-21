@@ -3,10 +3,13 @@
 type ErrorCode = 
   | 'auth/invalid-email'
   | 'auth/user-disabled'
+  | 'auth/rate-limit'
+  | 'auth/email-check'
   | 'payment/insufficient-funds'
   | 'payment/creation-failed'
   | 'supabase/query-error'
-  | 'network/connection-error';
+  | 'network/connection-error'
+  | 'security/validation-failed';
 
 interface ErrorMapping {
   code: ErrorCode;
@@ -23,6 +26,16 @@ const errorMappings: Record<ErrorCode, ErrorMapping> = {
   'auth/user-disabled': {
     code: 'auth/user-disabled',
     message: 'Account is temporarily disabled',
+    severity: 'error'
+  },
+  'auth/rate-limit': {
+    code: 'auth/rate-limit',
+    message: 'Too many requests. Please try again later',
+    severity: 'error'
+  },
+  'auth/email-check': {
+    code: 'auth/email-check',
+    message: 'Email check failed. Please try again',
     severity: 'error'
   },
   'payment/insufficient-funds': {
@@ -44,6 +57,11 @@ const errorMappings: Record<ErrorCode, ErrorMapping> = {
     code: 'network/connection-error',
     message: 'Please check your internet connection',
     severity: 'warning'
+  },
+  'security/validation-failed': {
+    code: 'security/validation-failed',
+    message: 'Validation failed. Please try again',
+    severity: 'error'
   }
 };
 

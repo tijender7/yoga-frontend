@@ -1,5 +1,8 @@
 import { supabase } from './supabase'
 import { API_ROUTES } from '@/config';
+import { errorHandler } from '@/lib/errorHandler';
+import { validators } from '@/lib/validators';
+import { rateLimit } from '@/lib/rate-limit';
 
 export async function fetchYogaPricing(region: string) {
     const { data, error } = await supabase
@@ -29,34 +32,5 @@ const formatAmountForCurrency = (amount: number, currency: string) => {
   }
 };
 
-export async function handlePayment(amount: number, currency: string = 'INR', userId?: string) {
-    try {
-        if (userId) {
-            localStorage.setItem('temp_payment_user_id', userId);
-        }
-        
-        const formattedAmount = formatAmountForCurrency(amount, currency);
-        
-        const response = await fetch(API_ROUTES.PAYMENT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                amount: formattedAmount,
-                currency,
-                user_id: userId 
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('Payment creation failed');
-        }
-
-        const { payment_link } = await response.json();
-        window.location.href = payment_link;
-    } catch (error) {
-        console.error('Payment failed:', error);
-        throw error;
-    }
-}
 
 
