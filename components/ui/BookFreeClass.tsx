@@ -174,7 +174,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
               {buttonText}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-white text-gray-800 rounded-lg shadow-lg">
+          <DialogContent className="sm:max-w-[425px] bg-white text-gray-800 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-2xl font-bold text-gray-900">Book Your Free Weekend Class</DialogTitle>
               <DialogDescription className="text-gray-600">
@@ -188,7 +188,22 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                 {notification.message}
               </div>
             )}
-            <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+            <form 
+              onSubmit={handleSubmit} 
+              className="grid gap-4 py-4"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const inputs = Array.from(form.getElementsByTagName('input'));
+                  const currentIndex = inputs.indexOf(e.target as HTMLInputElement);
+                  const nextInput = inputs[currentIndex + 1];
+                  if (nextInput) {
+                    nextInput.focus();
+                  }
+                }
+              }}
+            >
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-medium text-gray-700">
                   Name*
