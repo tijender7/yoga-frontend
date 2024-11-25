@@ -174,15 +174,15 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
               {buttonText}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-white text-gray-800 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-gray-900">Book Your Free Weekend Class</DialogTitle>
-              <DialogDescription className="text-gray-600">
+          <DialogContent className="sm:max-w-[425px] bg-white text-gray-800 rounded-lg shadow-lg max-h-[85vh] md:max-h-[90vh] overflow-y-auto relative p-4 md:p-6 mx-2 my-4 md:m-0">
+            <DialogHeader className="sticky top-0 bg-white pb-4 z-10 border-b">
+              <DialogTitle className="text-xl md:text-2xl font-bold text-gray-900">Book Your Free Weekend Class</DialogTitle>
+              <DialogDescription className="text-gray-600 text-sm md:text-base">
                 Enter your details below to secure your spot in our upcoming free yoga session.
               </DialogDescription>
             </DialogHeader>
             {notification && (
-              <div className={`p-2 rounded-md ${
+              <div className={`p-2 rounded-md sticky top-[100px] z-10 ${
                 notification.type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
               } text-sm mb-4`}>
                 {notification.message}
@@ -190,7 +190,11 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
             )}
             <form 
               onSubmit={handleSubmit} 
-              className="grid gap-4 py-4"
+              className="grid gap-4 py-4 px-1"
+              style={{ 
+                scrollbarWidth: 'thin',
+                scrollbarColor: '#E5E7EB transparent'
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
                   e.preventDefault();
@@ -205,7 +209,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
               }}
             >
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="name" className="text-sm font-medium text-gray-700 block">
                   Name*
                 </Label>
                 <Input
@@ -213,7 +217,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary"
+                  className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary rounded-md px-3 py-2"
                   required
                 />
               </div>
@@ -284,8 +288,12 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                 We respect your privacy. Your email is required to send you the Zoom link for the class. 
                 Phone number is optional. We are GDPR compliant and adhere to international data protection regulations.
               </p>
-              <Button type="submit" className="w-full bg-primary text-white hover:bg-primary/90 transition-colors">
-                Book Now
+              <Button 
+                type="submit" 
+                className="w-full bg-primary text-white hover:bg-primary/90 transition-colors py-2.5 rounded-md mt-4 sticky bottom-0"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Booking...' : 'Book Now'}
               </Button>
             </form>
           </DialogContent>
