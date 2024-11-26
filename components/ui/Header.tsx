@@ -34,7 +34,7 @@ function GlowButton() {
           bg-primary text-white font-medium
           hover:bg-primary/90 shadow-lg hover:shadow-xl
           transition-all duration-200 ease-out
-          px-6 py-2 rounded-full text-sm min-w-[100px]
+          px-4 py-1.5 rounded-full text-xs sm:text-sm min-w-[80px]
           border-2 border-primary
           ${isHovered ? 'scale-105' : 'scale-100'}
         `}
@@ -86,7 +86,7 @@ export default function Header({ showNavLinks = true }: HeaderProps) {
             <Button 
               variant="outline" 
               size="sm" 
-              className="text-sm font-medium px-6 py-2 rounded-full border-2 border-primary text-primary hover:bg-primary/5 transition-colors min-w-[100px]"
+              className="text-xs sm:text-sm font-medium px-4 py-1.5 rounded-full border-2 border-primary text-primary hover:bg-primary/5 transition-colors min-w-[80px]"
             >
               Sign In
             </Button>
