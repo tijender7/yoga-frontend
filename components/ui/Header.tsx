@@ -31,10 +31,12 @@ function GlowButton() {
         isOpen={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         buttonClassName={`
-          bg-primary text-primary-foreground hover:bg-primary/90
+          bg-primary text-white font-medium
+          hover:bg-primary/90 shadow-lg hover:shadow-xl
           transition-all duration-200 ease-out
-          px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium
-          ${isHovered ? 'shadow-lg' : 'shadow'}
+          px-4 py-2 rounded-full text-sm
+          border-2 border-primary
+          ${isHovered ? 'scale-105' : 'scale-100'}
         `}
       />
       {isHovered && (
@@ -84,9 +86,9 @@ export default function Header({ showNavLinks = true }: HeaderProps) {
             <Button 
               variant="outline" 
               size="sm" 
-              className="text-xs sm:text-sm border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border-2 border-primary text-primary hover:bg-primary/5 transition-colors"
             >
-              Login
+              Sign In
             </Button>
           </Link>
         )}
