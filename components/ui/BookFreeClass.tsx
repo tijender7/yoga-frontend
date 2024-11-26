@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -155,6 +156,22 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Add meta tag for mobile viewport
+  useEffect(() => {
+    // Add meta tag when dialog opens
+    if (isDialogOpen) {
+      const meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0';
+      document.head.appendChild(meta);
+
+      // Remove meta tag when dialog closes
+      return () => {
+        document.head.removeChild(meta);
+      };
+    }
+  }, [isDialogOpen]);
+
   return (
     <>
       {isConfettiActive && (
@@ -177,11 +194,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
           <DialogContent className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] sm:w-[450px] bg-white text-gray-800 rounded-lg shadow-lg">
             <div className="relative flex flex-col h-[80vh]">
               <div className="sticky top-0 right-0 p-2 z-20 flex justify-end bg-white/80 backdrop-blur-sm border-b">
-                <button 
-                  onClick={() => setIsDialogOpen(false)}
-                  className="rounded-full p-2 hover:bg-gray-100 transition-colors"
-                  aria-label="Close dialog"
-                >
+                <DialogClose className="rounded-full p-2 hover:bg-gray-100 transition-colors">
                   <svg 
                     width="15" 
                     height="15" 
@@ -197,7 +210,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                       clipRule="evenodd"
                     />
                   </svg>
-                </button>
+                </DialogClose>
               </div>
 
               <div className="flex-1 overflow-y-auto px-6">
@@ -217,6 +230,7 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                 )}
                 
                 <form 
+                  id="bookingForm"
                   onSubmit={handleSubmit} 
                   className="space-y-4 pb-20"
                   onKeyDown={(e) => {
@@ -241,12 +255,13 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary rounded-md px-3 py-2"
+                      className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary rounded-md px-3 py-2 text-base"
                       required
+                      inputMode="text"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="email" className="text-sm font-medium text-gray-700 block">
                       Email*
                     </Label>
                     <Input
@@ -254,23 +269,24 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary"
+                      className="w-full bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary rounded-md px-3 py-2 text-base"
                       required
+                      inputMode="email"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="phone" className="text-sm font-medium text-gray-700 block">
                       Phone (optional)
                     </Label>
                     <div className="flex space-x-2">
                       <Select value={countryCode} onValueChange={setCountryCode}>
-                        <SelectTrigger className="w-[130px] bg-gray-100 border-gray-300">
+                        <SelectTrigger className="w-[100px] bg-gray-100 border-gray-300">
                           <SelectValue placeholder="Code" />
                         </SelectTrigger>
                         <SelectContent>
                           {countryCodes.map((country) => (
                             <SelectItem key={country.code} value={country.code}>
-                              {country.code} ({country.country})
+                              {country.code}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -280,7 +296,8 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="flex-1 bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary"
+                        className="flex-1 bg-gray-100 border-gray-300 focus:border-primary focus:ring-primary rounded-md px-3 py-2 text-base"
+                        inputMode="tel"
                       />
                     </div>
                   </div>
