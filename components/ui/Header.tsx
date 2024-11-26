@@ -34,7 +34,7 @@ function GlowButton() {
           bg-primary text-white font-medium
           hover:bg-primary/90 shadow-lg hover:shadow-xl
           transition-all duration-200 ease-out
-          px-4 py-2 rounded-full text-sm
+          px-6 py-2 rounded-full text-sm min-w-[100px]
           border-2 border-primary
           ${isHovered ? 'scale-105' : 'scale-100'}
         `}
@@ -72,7 +72,7 @@ export default function Header({ showNavLinks = true }: HeaderProps) {
       <Link className="flex items-center justify-center" href="/">
         <span className="text-lg sm:text-xl font-bold text-primary">YogForever</span>
       </Link>
-      <div className="flex items-center gap-1 sm:gap-2">
+      <div className="flex items-center gap-3 sm:gap-4">
         {showNavLinks && (
           <nav className="hidden md:flex items-center gap-4 mr-4">
             <Link className="text-sm font-medium text-gray-700 hover:text-gray-900 hover:underline underline-offset-4" href="/#about">About</Link>
@@ -86,7 +86,7 @@ export default function Header({ showNavLinks = true }: HeaderProps) {
             <Button 
               variant="outline" 
               size="sm" 
-              className="text-xs sm:text-sm font-medium px-4 py-2 rounded-full border-2 border-primary text-primary hover:bg-primary/5 transition-colors"
+              className="text-sm font-medium px-6 py-2 rounded-full border-2 border-primary text-primary hover:bg-primary/5 transition-colors min-w-[100px]"
             >
               Sign In
             </Button>
