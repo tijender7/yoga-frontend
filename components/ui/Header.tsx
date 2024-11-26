@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'  // Add this import
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,10 +10,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, CreditCard, LogOut, Menu, X } from 'lucide-react'  // Add Menu and X here
+import { User, CreditCard, LogOut, Menu, X } from 'lucide-react'
 import { useUser } from '@/hooks/useUser'
 import { supabase } from '@/lib/supabase'
 import BookFreeClass from '@/components/ui/BookFreeClass'
+
+// Add viewport management function
+const setViewportMeta = () => {
+  if (typeof window !== 'undefined') {
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.name = 'viewport';
+      document.head.appendChild(viewport);
+    }
+    viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0';
+  }
+};
 
 // GlowButton component
 function GlowButton() {
@@ -55,8 +68,24 @@ export default function Header({ showNavLinks = true }: HeaderProps) {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Add viewport management effect
+  useEffect(() => {
+    setViewportMeta();
+    
+    // Reset on unmount
+    return () => {
+      if (typeof window !== 'undefined') {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.content = 'width=device-width, initial-scale=1';
+        }
+      }
+    };
+  }, []);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    setViewportMeta(); // Reset viewport before redirect
     window.location.href = '/';
   };
 
