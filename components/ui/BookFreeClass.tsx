@@ -231,6 +231,40 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
                 id="bookingForm"
                 onSubmit={handleSubmit} 
                 className="space-y-4"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    // Get all input fields
+                    const form = e.currentTarget;
+                    const inputs = Array.from(form.querySelectorAll('input:not([type="tel"]), select'));
+                    const currentElement = document.activeElement;
+                    
+                    // Find current input index
+                    const currentIndex = inputs.indexOf(currentElement as HTMLElement);
+                    
+                    // Check if current field is valid
+                    if (currentElement instanceof HTMLInputElement && !currentElement.validity.valid) {
+                      return; // Stay on current field if it's invalid
+                    }
+                    
+                    // Check if all required fields are filled and valid
+                    const allRequiredFieldsValid = inputs
+                      .filter(input => input instanceof HTMLInputElement && input.required)
+                      .every(input => (input as HTMLInputElement).validity.valid);
+                    
+                    if (allRequiredFieldsValid && currentIndex === inputs.length - 1) {
+                      // If all required fields are valid and we're on the last field, submit the form
+                      form.requestSubmit();
+                    } else {
+                      // Move to next input
+                      const nextInput = inputs[currentIndex + 1] as HTMLElement;
+                      if (nextInput) {
+                        nextInput.focus();
+                      }
+                    }
+                  }
+                }}
               >
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-sm font-medium text-gray-700 block">
