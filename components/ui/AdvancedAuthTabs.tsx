@@ -404,7 +404,14 @@ function AuthContent() {
   }, [])
 
   return (
-    <div className="w-full max-w-md mx-auto space-y-6 bg-white p-8 rounded-lg shadow-md">
+    <div className="w-full max-w-md mx-auto space-y-6 bg-white p-8 rounded-lg shadow-md relative">
+      <button 
+        onClick={() => router.push('/')}
+        className="absolute -top-2 -right-2 w-8 h-8 bg-gray-800 hover:bg-gray-700 text-white rounded-full flex items-center justify-center shadow-md transition-colors"
+        aria-label="Close and return to home"
+      >
+        ×
+      </button>
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger 
