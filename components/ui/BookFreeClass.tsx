@@ -191,9 +191,9 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
             </Button>
           </DialogTrigger>
           <DialogContent 
-            className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] sm:w-[450px] bg-white text-gray-800 rounded-lg shadow-lg [&>button]:hidden"
+            className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] sm:w-[450px] max-h-[90vh] bg-white text-gray-800 rounded-lg shadow-lg [&>button]:hidden overflow-hidden"
           >
-            <div className="relative flex flex-col h-[80vh]">
+            <div className="relative flex flex-col h-full">
               <div className="absolute top-2 right-2 z-20">
                 <DialogClose className="rounded-full p-2 hover:bg-gray-100 transition-colors">
                   <svg 
