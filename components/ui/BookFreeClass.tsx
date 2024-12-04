@@ -194,6 +194,13 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
             className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] sm:w-[450px] bg-white text-gray-800 rounded-lg shadow-lg [&>button]:hidden"
           >
             <div className="relative flex flex-col h-[80vh]">
+              <DialogHeader className="py-4 px-6">
+                <DialogTitle className="text-xl md:text-2xl font-bold text-gray-900">Book Your Free Weekend Class</DialogTitle>
+                <DialogDescription className="text-gray-600 text-sm md:text-base mt-2">
+                  Enter your details below to secure your spot in our upcoming free yoga session.
+                </DialogDescription>
+              </DialogHeader>
+
               <div className="sticky top-0 right-0 p-2 z-20 flex justify-end bg-white/80 backdrop-blur-sm border-b">
                 <DialogClose className="rounded-full p-2 hover:bg-gray-100 transition-colors">
                   <svg 
@@ -215,13 +222,6 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
               </div>
 
               <div className="flex-1 overflow-y-auto px-6">
-                <DialogHeader className="py-4">
-                  <DialogTitle className="text-xl md:text-2xl font-bold text-gray-900">Book Your Free Weekend Class</DialogTitle>
-                  <DialogDescription className="text-gray-600 text-sm md:text-base mt-2">
-                    Enter your details below to secure your spot in our upcoming free yoga session.
-                  </DialogDescription>
-                </DialogHeader>
-                
                 {notification && (
                   <div className={`p-3 rounded-md mb-4 ${
                     notification.type === 'error' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
