@@ -51,8 +51,8 @@ export default function ContactFooterForm() {
       setIsOpen(false)
       setForm({ name: '', email: '', message: '' })
     } catch (err) {
-      console.error('Error sending message:', err)
-      toast.error("Failed to send message. Please try again.")
+      console.error('Contact form submission unsuccessful - Please retry');
+      toast.error("We couldn't send your message at the moment. Please try again in a few minutes.")
     } finally {
       setIsLoading(false)
     }

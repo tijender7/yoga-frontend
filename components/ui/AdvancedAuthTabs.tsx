@@ -227,7 +227,7 @@ function AuthContent() {
           // Sign the user out
           const { error: signOutError } = await supabase.auth.signOut()
           if (signOutError) {
-            console.error('Error signing out:', signOutError)
+            console.error('Auth state cleanup failed - Please try again');
           }
 
           // Inform the user to verify their email
@@ -242,15 +242,10 @@ function AuthContent() {
           })
 
           if (resendError) {
-            console.error('Error resending verification email:', resendError)
+            console.error('Verification email delivery failed - Please try again later');
             setAlert({
               type: 'error',
-              message: 'Failed to resend verification email. Please contact support.',
-            })
-          } else {
-            setAlert({
-              type: 'info',
-              message: 'A verification link has been resent to your email.',
+              message: 'Failed to resend verification email. Please try again in a few minutes.',
             })
           }
 
@@ -268,7 +263,8 @@ function AuthContent() {
         router.push('/dashboard')
       }
     } catch (error: any) {
-      console.error('Signup/Signin process failed:', error)
+      // Generic error logging with action context
+      console.error(`Auth action failed: ${activeTab === 'signup' ? 'Registration' : 'Login'} - Please try again`);
 
       if (activeTab === 'signup') {
         // Handle Specific Sign-Up Errors

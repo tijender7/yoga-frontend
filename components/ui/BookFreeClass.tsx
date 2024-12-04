@@ -117,11 +117,18 @@ export default function BookFreeClass({ buttonText = "Book Your Free Class", isO
       showConfirmation()
 
     } catch (error: unknown) {
-      console.error('Error in handleSubmit:', error)
+      console.error('Free class booking form submission failed - Please try again');
+      
       if (error instanceof Error) {
-        setNotification({ type: 'error', message: error.message || "An unexpected error occurred. Please try again." })
+        setNotification({ 
+          type: 'error', 
+          message: "We couldn't process your free class booking. Please check your details and try again." 
+        })
       } else {
-        setNotification({ type: 'error', message: "An unexpected error occurred. Please try again." })
+        setNotification({ 
+          type: 'error', 
+          message: "We're having trouble processing your request. Please try again in a few minutes." 
+        })
       }
     } finally {
       setIsLoading(false)

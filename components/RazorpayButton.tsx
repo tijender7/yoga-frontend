@@ -12,7 +12,7 @@ const RazorpayButton: React.FC<RazorpayButtonProps> = ({ buttonId, userId }) => 
     const callbackName = `razorpayPaymentSuccess_${Math.random().toString(36).slice(2)}`;
     
     (window as any)[callbackName] = () => {
-      console.log("Payment successful");
+      console.log("Transaction completed - Refreshing page");
       localStorage.removeItem('current_user_id');
       
       setTimeout(() => {
