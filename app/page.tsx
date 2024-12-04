@@ -138,7 +138,7 @@ export default function YogaLanding() {
                     
                     <div>
                       <h3 className="text-xl font-bold text-gray-800 mb-4">Our Journey</h3>
-                      <p className="text-sm text-gray-700">Founded in 2010, YogaHarmony has grown from a local studio to a global online platform, connecting thousands of yoga enthusiasts worldwide.</p>
+                      <p className="text-sm text-gray-700">Founded in 2010, YogForever has grown from a local studio to a global online platform, connecting thousands of yoga enthusiasts worldwide.</p>
                     </div>
                     
                     <div>
